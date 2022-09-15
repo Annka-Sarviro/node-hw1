@@ -3,7 +3,7 @@ const {
   getContactById,
   removeContact,
   addContact,
-} = require("./contacts");
+} = require("./contacts/index");
 
 const argv = require("yargs").argv;
 
@@ -11,7 +11,7 @@ async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
       const contacts = await listContacts();
-      console.log(contacts);
+      console.table(contacts);
       break;
 
     case "get":
@@ -29,6 +29,9 @@ async function invokeAction({ action, id, name, email, phone }) {
 
     case "remove":
       const delContact = await removeContact(id);
+      if (!delContact) {
+        throw new Error("Contact not found");
+      }
       console.log(delContact);
       break;
 
